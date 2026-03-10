@@ -9,7 +9,7 @@ body {
     line-height: 1.6;
     max-width: 800px;
     margin: 0 auto;
-    padding: 20px;
+    background-color: purple;
 }
 
 nav {
@@ -43,4 +43,33 @@ footer {
     padding-top: 10px;
     border-top: 1px solid #ccc;
     color: #666;
+    background: white;
+}
+#white-bg {
+    background-color: white;
+    height: 100vh;
+    padding: 20px;
+}
+
+main form {
+    display: flex;
+    flex-direction: column;
+}
+
+main input  {
+    font-size: large;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 50px;
+    width: 150px;
+}
+
+main label {
+    font-weight: bold;
+    font-size: larger;
+}
+
+main input[type="submit"] {
+    width: 100px;
+    margin-left: 100px;
 }

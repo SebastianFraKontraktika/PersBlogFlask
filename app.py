@@ -6,17 +6,17 @@ app = Flask(__name__)
 def forside():
     return render_template("forside.html")
 
-@app.route("/om")
-def om():
+@app.route("/innlegg")
+def inlegg():
     return "<h1>hello world<h1/>"
 
 @app.route("/signup")
 def singup():
-    return "<h1>kommer snart!<h1/>"
+    return render_template("signup.html")
 
 @app.route("/login")
 def login():
-    return "<h1>kommer snart!<h1/>"
+    return render_template("login.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
