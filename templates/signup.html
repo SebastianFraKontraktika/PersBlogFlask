@@ -4,13 +4,13 @@
 
 {% block innhold %}
     <h1>Signup</h1>
-    <form action="">
+    <form method="post">
         <label for="username">Username:</label>
         <input type="text" id="username" required>
         <label for="email">Email:</label>
         <input type="email" id="email" required>
         <label for="passord">password:</label>
         <input type="password" id="passord" required>
+        <input type="submit" value="Submit">
     </form>
-    <input type="submit" value="Submit">
 {% endblock %}
