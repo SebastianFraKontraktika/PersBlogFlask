@@ -1,6 +1,8 @@
 from flask import Flask, render_template
+from db import get_db
 
 app = Flask(__name__)
+app.secret_key = "temp"
 
 @app.route("/")
 def forside():
@@ -17,6 +19,10 @@ def singup():
 @app.route("/login")
 def login():
     return render_template("login.html")
+
+@app.route("/profile")
+def profil():
+    return "<h1>profilen<h1/>"
 
 if __name__ == "__main__":
     app.run(debug=True)
