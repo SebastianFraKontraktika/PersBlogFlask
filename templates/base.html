@@ -7,23 +7,25 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <nav>
-        <div>
-            <a href="/">Forside</a>
-            <a href="/om">Om oss</a>
-        </div>
-        <div>
-            <a href="/signup">Sign Up</a>
-            <a href="/login">Login</a>
-        </div>
-    </nav>
-
-    <main>
-        {% block innhold %}{% endblock %}
-    </main>
-
-    <footer>
-        <p>Laget med Flask</p>
-    </footer>
+    <div id="white-bg">
+        <nav>
+            <div>
+                <a href="/">Forside</a>
+                <a href="/innlegg">innlegg</a>
+            </div>
+            <div>
+                <a href="/signup">Sign Up</a>
+                <a href="/login">Login</a>
+            </div>
+        </nav>
+    
+        <main>
+            {% block innhold %}{% endblock %}
+        </main>
+    
+        <footer>
+            <p>Laget med Flask</p>
+        </footer>
+    </div>
 </body>
 </html>
