@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, jsonify
+from flask import Flask, render_template, request, redirect, url_for, flash
 from db import get_db
 
 app = Flask(__name__)
@@ -13,7 +13,7 @@ def inlegg():
     return "<h1>hello world<h1/>"
 
 @app.route("/signup", methods=["GET", "POST"])
-def singup():
+def signup():
     if request.method == "POST":
         username = request.form.get("username")
         email = request.form.get("email")
@@ -23,14 +23,27 @@ def singup():
         cursor = db.cursor(dictionary=True)
         cursor.execute("SELECT username, email FROM users")
         Brukere = cursor.fetchall()
-        print(isinstance(Brukere[0], dict))
 
-        cursor.execute(
-            "INSERT INTO users (username, email, password) VALUES (%s, %s, %s)",
-            (username, email, password))
-        db.commit()
-        cursor.close()
-        db.close()
+        if Brukere:
+            for bruker in Brukere:
+                if bruker["email"] == email:
+                    email = None
+                    return redirect(url_for("login"))
+                elif bruker["username"] == username:
+                    username = None
+                    print("Username already in use")
+                    # make it so that something popsup to tell that username is already in use
+                    # flash('username already exists', 'error')
+                    # return redirect(url_for("signup"))
+
+            if email and username:    
+                print("Hello")
+                cursor.execute(
+                    "INSERT INTO users (username, email, password) VALUES (%s, %s, %s)",
+                    (username, email, password))
+                db.commit()
+                cursor.close()
+                db.close()
 
     return render_template("signup.html")
 
