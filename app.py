@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, jsonify
 from db import get_db
 
 app = Flask(__name__)
@@ -18,16 +18,20 @@ def singup():
         username = request.form.get("username")
         email = request.form.get("email")
         password = request.form.get("password")
-        print(username, password, email)
+
         db = get_db()
         cursor = db.cursor(dictionary=True)
+        cursor.execute("SELECT username, email FROM users")
+        Brukere = cursor.fetchall()
+        print(isinstance(Brukere[0], dict))
+
         cursor.execute(
             "INSERT INTO users (username, email, password) VALUES (%s, %s, %s)",
             (username, email, password))
         db.commit()
         cursor.close()
         db.close()
-        
+
     return render_template("signup.html")
 
 @app.route("/login")
