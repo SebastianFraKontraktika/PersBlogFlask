@@ -1,2 +1,2 @@
-# ignore database
-db.py
+# ignore sensitve information
+.env

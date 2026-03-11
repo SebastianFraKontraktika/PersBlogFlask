@@ -1,8 +1,12 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
+from dotenv import load_dotenv, dotenv_values 
 from db import get_db
+import os
+
+load_dotenv()
 
 app = Flask(__name__)
-app.secret_key = "temp"
+app.secret_key = os.getenv("secret_key")
 
 @app.route("/")
 def forside():
