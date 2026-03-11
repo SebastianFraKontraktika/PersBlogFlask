@@ -18,7 +18,9 @@
                 <a href="/login">Login</a>
             </div>
         </nav>
-    
+        <article>
+            {% block alert %}{% endblock %}
+        </article>
         <main>
             {% block innhold %}{% endblock %}
         </main>
