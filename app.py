@@ -71,7 +71,7 @@ def login():
 
         for bruker in Brukere:
             if bruker == user:
-                flash("You have succesfully created a profile, proceed to login")
+                flash("Congratulations, you are now logged in")
                 # noe som lagrer sessions
                 return redirect(url_for("profil"))
             
