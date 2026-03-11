@@ -23,7 +23,7 @@ def signup():
         cursor = db.cursor(dictionary=True)
         cursor.execute("SELECT username, email FROM users")
         Brukere = cursor.fetchall()
-
+        
         if Brukere:
             for bruker in Brukere:
                 if bruker["email"] == email:
@@ -37,18 +37,44 @@ def signup():
                     # return redirect(url_for("signup"))
 
             if email and username:    
-                print("Hello")
                 cursor.execute(
                     "INSERT INTO users (username, email, password) VALUES (%s, %s, %s)",
                     (username, email, password))
                 db.commit()
                 cursor.close()
                 db.close()
+                return redirect(url_for("login"))
+        else:
+            cursor.execute(
+                "INSERT INTO users (username, email, password) VALUES (%s, %s, %s)",
+                (username, email, password))
+            db.commit()
+            cursor.close()
+            db.close()
+            return redirect(url_for("login"))
 
     return render_template("signup.html")
 
-@app.route("/login")
+@app.route("/login", methods=["GET", "POST"])
 def login():
+    if request.method == "POST":
+        username = request.form.get("username")
+        password = request.form.get("password")
+        user = {"username": username, "password": password}
+
+        db = get_db()
+        cursor = db.cursor(dictionary=True)
+        cursor.execute("SELECT username, password FROM users")
+        Brukere = cursor.fetchall()
+
+        for bruker in Brukere:
+            if bruker == user:
+                # noe som poper opp og sier du er logget på
+                # noe som lagrer sessions
+                return redirect(url_for("profil"))
+        # noe som sier at brukernavn eller passord er feil.
+        print("FAEN")
+
     return render_template("login.html")
 
 @app.route("/profile")
