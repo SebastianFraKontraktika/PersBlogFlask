@@ -2,6 +2,12 @@
 
 {% block tittel %}Sign Up{% endblock %}
 
+{% block alert %}
+    {% if error %}
+        <p><strong>Error:</strong> {{ error }}</p>
+    {% endif %}
+{% endblock %}
+
 {% block innhold %}
     <h1>Signup</h1>
     <form method="post">
