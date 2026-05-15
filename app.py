@@ -1,6 +1,7 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 from dotenv import load_dotenv, dotenv_values 
 from db import get_db
+import functools
 import os
 
 load_dotenv()
@@ -8,9 +9,17 @@ load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.getenv("secret_key")
 
+def login_required(func):
+    @functools.wraps(func)
+    def secure_function(*args, **kwargs):
+        if not session:
+            return redirect(url_for("login"))
+        return func(*args, **kwargs)
+    return secure_function()
+
 @app.route("/")
 def forside():
-    return render_template("forside.html")
+    return render_template("forside.html", name=session.get("username", "unknown"))
 
 @app.route("/innlegg")
 def inlegg():
@@ -76,15 +85,19 @@ def login():
         for bruker in Brukere:
             if bruker == user:
                 flash("Congratulations, you are now logged in")
-                # noe som lagrer sessions
+                session["username"] = username
                 return redirect(url_for("profil"))
             
         error = "Invalid username or password please try again"
     return render_template("login.html", error=error)
 
-@app.route("/profile")
+@app.route("/profile", methods=["GET", "POST"])
+# @login_required
 def profil():
-    return "<h1>profilen<h1/>"
+    if request.method == "POST":
+        session.clear()
+        return redirect(url_for("forside"))
+    return render_template("profil.html", name=session["username"])
 
 if __name__ == "__main__":
     app.run(debug=True)
