@@ -107,4 +107,4 @@ if you have any trouble, then you can open an issue, or you can contact me.
 
 ## License
 
-This project is released into the public domain under the [Unlicense](https://unlicense.org). You are free to use, copy, modify, and distribute it without any restrictions.
+This project is released into the public domain under the [Unlicense](LICENSE). You are free to use, copy, modify, and distribute it without any restrictions.
