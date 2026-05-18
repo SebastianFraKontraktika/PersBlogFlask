@@ -3,8 +3,11 @@ from dotenv import load_dotenv, dotenv_values
 from db import get_db
 import functools
 import os
+from argon2 import PasswordHasher
+import json
 
 load_dotenv()
+ph = PasswordHasher()
 
 app = Flask(__name__)
 app.secret_key = os.getenv("secret_key")
@@ -31,13 +34,13 @@ def signup():
     if request.method == "POST":
         username = request.form.get("username")
         email = request.form.get("email")
-        password = request.form.get("password")
+        password = ph.hash(request.form.get("password"))
 
         db = get_db()
         cursor = db.cursor(dictionary=True)
         cursor.execute("SELECT username, email FROM users")
         Brukere = cursor.fetchall()
-        
+
         if Brukere:
             for bruker in Brukere:
                 if bruker["email"] == email:
@@ -75,7 +78,6 @@ def login():
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
-        user = {"username": username, "password": password}
 
         db = get_db()
         cursor = db.cursor(dictionary=True)
@@ -83,9 +85,15 @@ def login():
         Brukere = cursor.fetchall()
 
         for bruker in Brukere:
-            if bruker == user:
+            if bruker['username'] == username and ph.verify(bruker['password'], password):
                 flash("Congratulations, you are now logged in")
                 session["username"] = username
+
+                # unsure if this works, test it sometime.
+                # if ph.check_needs_rehash(bruker['password']):
+                #     print("jo")
+                #     bruker.set_password_hash_for_user(bruker['username'], ph.hash(password))
+
                 return redirect(url_for("profil"))
             
         error = "Invalid username or password please try again"
